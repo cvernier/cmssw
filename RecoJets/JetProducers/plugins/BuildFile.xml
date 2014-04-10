@@ -10,5 +10,4 @@
   <use   name="Geometry/Records"/>
   <use   name="CommonTools/UtilAlgos"/>
   <use   name="fastjet"/>
-  <use   name="fastjet-contrib"/>
 </library>

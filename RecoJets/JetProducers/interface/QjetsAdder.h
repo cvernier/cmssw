@@ -14,7 +14,6 @@ class QjetsAdder : public edm::EDProducer {
 public:
   explicit QjetsAdder(const edm::ParameterSet& iConfig) :
     src_(iConfig.getParameter<edm::InputTag>("src")),
-    src_token_(consumes<edm::View<reco::Jet>>(src_)),
     qjetsAlgo_( iConfig.getParameter<double>("zcut"),
 		iConfig.getParameter<double>("dcutfctr"),
 		iConfig.getParameter<double>("expmin"),
@@ -35,7 +34,6 @@ public:
 
 private:	
   edm::InputTag src_ ;
-  edm::EDGetTokenT<edm::View<reco::Jet>> src_token_;
   QjetsPlugin   qjetsAlgo_ ;
   int           ntrial_;
   double        cutoff_;

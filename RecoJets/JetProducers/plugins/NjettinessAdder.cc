@@ -1,12 +1,12 @@
 #include "RecoJets/JetProducers/interface/NjettinessAdder.h"
-#include "fastjet/contrib/Njettiness.hh"
+#include "RecoJets/JetAlgorithms/interface/Njettiness.hh"
 
 #include "FWCore/Framework/interface/MakerMacros.h"
 
 void NjettinessAdder::produce(edm::Event & iEvent, const edm::EventSetup & iSetup) {
   // read input collection
   edm::Handle<edm::View<reco::PFJet> > jets;
-  iEvent.getByToken(src_token_, jets);
+  iEvent.getByLabel(src_, jets);
   
   // prepare room for output
   std::vector<float> tau1;         tau1.reserve(jets->size());

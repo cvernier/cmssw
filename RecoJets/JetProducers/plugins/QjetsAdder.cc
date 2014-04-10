@@ -10,7 +10,7 @@ void QjetsAdder::produce(edm::Event & iEvent, const edm::EventSetup & iSetup) {
   // read input collection
   //edm::Handle<edm::View<pat::Jet> > jets;
   edm::Handle<edm::View<reco::Jet> > jets;
-  iEvent.getByToken(src_token_, jets);
+  iEvent.getByLabel(src_, jets);
 
   // prepare room for output
   std::vector<float> QjetsVolatility;       QjetsVolatility.reserve(jets->size());
@@ -57,7 +57,7 @@ void QjetsAdder::produce(edm::Event & iEvent, const edm::EventSetup & iSetup) {
     else constits = out_jets_basic.at(0).associated_cluster_sequence()->exclusive_subjets_up_to(out_jets_basic.at(0),QjetsPreclustering_);
 
     edm::Service<edm::RandomNumberGenerator> rng;
-    CLHEP::HepRandomEngine* engine = &rng->getEngine(iEvent.streamID());
+    CLHEP::HepRandomEngine* engine = &rng->getEngine();
     qjetsAlgo_.SetRNEngine(engine);
     // create probabilistic recusterings
     for(unsigned int ii = 0 ; ii < (unsigned int) ntrial_ ; ii++){

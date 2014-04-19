@@ -42,6 +42,7 @@ protected:
   bool useFiltering_;         /// Jet filtering technique
   bool useTrimming_;          /// Jet trimming technique
   bool usePruning_;           /// Jet pruning technique
+  bool useKtPruning_;         /// Use Kt clustering algorithm for pruning (default is Cambridge/Aachen)
   double muCut_;              /// for mass-drop tagging, m0/mjet (m0 = mass of highest mass subjet)
   double yCut_;               /// for mass-drop tagging, symmetry cut: min(pt1^2,pt2^2) * dR(1,2) / mjet > ycut
   double rFilt_;              /// for filtering, trimming: dR scale of sub-clustering

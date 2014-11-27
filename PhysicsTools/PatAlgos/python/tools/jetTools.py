@@ -46,7 +46,7 @@ _defaultBTagDiscriminators =['jetBProbabilityBJetTags'
                             #,'combinedSecondaryVertexV1BJetTags'
                             #,'combinedSecondaryVertexV1PositiveBJetTags'
                             #,'combinedSecondaryVertexMVABJetTags'
-                            #,'combinedSecondaryVertexV2BJetTags'
+                            #,'combinedInclusiveSecondaryVertexV2BJetTags'
                             #,'combinedSecondaryVertexNegativeBJetTags'
                             #,'combinedSecondaryVertexV1NegativeBJetTags'
                             #,'softPFMuonBJetTags'
@@ -104,7 +104,7 @@ _allowedBTagDiscriminators =['jetBProbabilityBJetTags'
                             ,'combinedSecondaryVertexV1BJetTags'
                             ,'combinedSecondaryVertexV1PositiveBJetTags'
                             ,'combinedSecondaryVertexMVABJetTags'
-                            ,'combinedSecondaryVertexV2BJetTags'
+                            ,'combinedInclusiveSecondaryVertexV2BJetTags'
                             ,'combinedSecondaryVertexNegativeBJetTags'
                             ,'combinedSecondaryVertexV1NegativeBJetTags'
                             ,'softPFMuonBJetTags'
@@ -413,7 +413,7 @@ class RunBTagging(ConfigToolBase):
                     else:
                         print '  --> ignored, since input %s not available!'%( vit(ivfFiltTILabel) )
 
-                if tag == 'combinedInclusiveSecondaryVertexBJetTags' or tag == 'combinedInclusiveSecondaryVertexPositiveBJetTags' or tag == 'combinedSecondaryVertexV2BJetTags':
+                if tag == 'combinedInclusiveSecondaryVertexBJetTags' or tag == 'combinedInclusiveSecondaryVertexPositiveBJetTags' or tag == 'combinedInclusiveSecondaryVertexV2BJetTags':
                     if hasattr( process, ipTILabel ) and hasattr( process, ivfTILabel ):
                         if not hasattr(process, tag+label+postfix):
                             tagMod=getattr(btag,tag).clone(tagInfos = vit(ipTILabel,ivfTILabel))

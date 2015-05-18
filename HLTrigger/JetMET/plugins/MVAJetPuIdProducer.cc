@@ -13,8 +13,8 @@
      applyJec_ = iConfig.getParameter<bool>("applyJec");
      jec_ =  iConfig.getParameter<std::string>("jec");
      rho_ = iConfig.getParameter<edm::InputTag>("rho");
-     residualsFromTxt_ = iConfig.getParameter<bool>("residualsFromTxt");
-     if(residualsFromTxt_) residualsTxt_ = iConfig.getParameter<edm::FileInPath>("residualsTxt");
+ //    residualsFromTxt_ = iConfig.getParameter<bool>("residualsFromTxt");
+ //    if(residualsFromTxt_) residualsTxt_ = iConfig.getParameter<edm::FileInPath>("residualsTxt");
      std::vector<edm::ParameterSet> algos = iConfig.getParameter<std::vector<edm::ParameterSet> >("algos");
      
      jecCor_ = 0;
@@ -172,34 +172,51 @@
  
  void
  MVAJetPuIdProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-         edm::ParameterSetDescription desc;
-     desc.setUnknown();
-     descriptions.addDefault(desc);
+
+	edm::ParameterSetDescription desc;
+        edm::FileInPath filePath;
+        std::vector<edm::ParameterSet> parameterSets;
+        desc.add<bool>("runMvas",true);
+        desc.add<bool>("produceJetIds",true);
+        desc.add<edm::InputTag>("jets",edm::InputTag("hltAK4PFJetsCorrected"));
+        desc.add<edm::InputTag>("vertexes",edm::InputTag("hltPixelVertices"));
+        desc.add<edm::InputTag>("jetids",edm::InputTag(""));
+        desc.add<bool>("inputIsCorrected",true);
+        desc.add<bool>("applyJec",false);
+        desc.add<std::string>("jec","AK4PFchs");
+        desc.add<edm::InputTag>("rho",edm::InputTag("hltFixedGridRhoFastjetAll"));
+        //desc.add<bool>("residualsFromTxt",true);
+       // desc.add<edm::FileInPath>("residualsTxt",filePath);
+//        desc.add<std::vector<edm::ParameterSet> >("algos",parameterSets);
+
+        desc.add<std::string>("label","cambiami!!!");
+        descriptions.add("MVAJetPuIdProducer",desc);
+
  }
-/* 
  
- void 
- MVAJetPuIdProducer::initJetEnergyCorrector(const edm::EventSetup &iSetup, bool isData)
- {
-     std::vector<std::string> jecLevels;
-     jecLevels.push_back("L1FastJet");
-     jecLevels.push_back("L2Relative");
-     jecLevels.push_back("L3Absolute");
-     if(isData && ! residualsFromTxt_ ) jecLevels.push_back("L2L3Residual");
- 
-     edm::ESHandle<JetCorrectorParametersCollection> parameters;
-     iSetup.get<JetCorrectionsRecord>().get(jec_,parameters);
-     for(std::vector<std::string>::const_iterator ll = jecLevels.begin(); ll != jecLevels.end(); ++ll)
-     { 
-         const JetCorrectorParameters& ip = (*parameters)[*ll];
-         jetCorPars_.push_back(ip); 
-     } 
-     if( isData && residualsFromTxt_ ) {
-         jetCorPars_.push_back(JetCorrectorParameters(residualsTxt_.fullPath())); 
-     }
-     
-     jecCor_ = new FactorizedJetCorrector(jetCorPars_);
- }
-*/
- DEFINE_FWK_MODULE(MVAJetPuIdProducer);
+/*
+   void 
+   MVAJetPuIdProducer::initJetEnergyCorrector(const edm::EventSetup &iSetup, bool isData)
+   {
+   std::vector<std::string> jecLevels;
+   jecLevels.push_back("L1FastJet");
+   jecLevels.push_back("L2Relative");
+   jecLevels.push_back("L3Absolute");
+   if(isData && ! residualsFromTxt_ ) jecLevels.push_back("L2L3Residual");
+
+   edm::ESHandle<JetCorrectorParametersCollection> parameters;
+   iSetup.get<JetCorrectionsRecord>().get(jec_,parameters);
+   for(std::vector<std::string>::const_iterator ll = jecLevels.begin(); ll != jecLevels.end(); ++ll)
+   { 
+   const JetCorrectorParameters& ip = (*parameters)[*ll];
+   jetCorPars_.push_back(ip); 
+   } 
+   if( isData && residualsFromTxt_ ) {
+   jetCorPars_.push_back(JetCorrectorParameters(residualsTxt_.fullPath())); 
+   }
+
+   jecCor_ = new FactorizedJetCorrector(jetCorPars_);
+   }
+   */
+DEFINE_FWK_MODULE(MVAJetPuIdProducer);
 

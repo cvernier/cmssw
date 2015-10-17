@@ -18,6 +18,7 @@ class CandidateBoostedDoubleSecondaryVertexComputer : public JetTagComputer {
   public:
     CandidateBoostedDoubleSecondaryVertexComputer(const edm::ParameterSet & parameters);
 
+    void  initialize(const JetTagComputerRecord &) override;
     float discriminator(const TagInfoHelper & tagInfos) const override;
 
   private:
@@ -26,14 +27,18 @@ class CandidateBoostedDoubleSecondaryVertexComputer : public JetTagComputer {
     void setTracksPV(const reco::CandidatePtr & trackRef, const reco::VertexRef & vertexRef, float & PVweight) const;
     void vertexKinematics(const reco::VertexCompositePtrCandidate & vertex, reco::TrackKinematics & vertexKinematics) const;
 
-    const double beta_ ;
+    const double beta_;
     const double R0_;
     // N-subjettiness calculator
     fastjet::contrib::Njettiness njettiness_;
 
     const double maxSVDeltaRToJet_;
-
+    const bool useCondDB_;
+    const std::string gbrForestLabel_;
     const edm::FileInPath weightFile_;
+    const bool useGBRForest_;
+    const bool useAdaBoost_;
+
     std::unique_ptr<TMVAEvaluator> mvaID;
 };
 

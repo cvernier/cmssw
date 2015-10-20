@@ -9,9 +9,15 @@
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/Candidate/interface/VertexCompositePtrCandidate.h"
 #include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
-
+#include "RecoBTag/SecondaryVertex/interface/V0Filter.h"
 #include "fastjet/PseudoJet.hh"
 #include "fastjet/contrib/Njettiness.hh"
+
+
+#include "RecoBTau/JetTagComputer/interface/GenericMVAJetTagComputer.h"
+#include "RecoBTau/JetTagComputer/interface/GenericMVAJetTagComputerWrapper.h"
+
+
 
 class CandidateBoostedDoubleSecondaryVertexComputer : public JetTagComputer {
 
@@ -26,7 +32,9 @@ class CandidateBoostedDoubleSecondaryVertexComputer : public JetTagComputer {
     void setTracksPVBase(const reco::TrackRef & trackRef, const reco::VertexRef & vertexRef, float & PVweight) const;
     void setTracksPV(const reco::CandidatePtr & trackRef, const reco::VertexRef & vertexRef, float & PVweight) const;
     void vertexKinematics(const reco::VertexCompositePtrCandidate & vertex, reco::TrackKinematics & vertexKinematics) const;
+    void etaRelToTauAxis(const reco::VertexCompositePtrCandidate & vertex, fastjet::PseudoJet & tauAxis, std::vector<float> & tau_trackEtaRel) const;
 
+    const GenericMVAJetTagComputer *computer;
     const double beta_;
     const double R0_;
     // N-subjettiness calculator
@@ -38,6 +46,7 @@ class CandidateBoostedDoubleSecondaryVertexComputer : public JetTagComputer {
     const edm::FileInPath weightFile_;
     const bool useGBRForest_;
     const bool useAdaBoost_;
+    reco::V0Filter trackPairV0Filter;
 
     std::unique_ptr<TMVAEvaluator> mvaID;
 };

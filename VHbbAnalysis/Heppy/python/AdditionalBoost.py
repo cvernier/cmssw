@@ -291,6 +291,7 @@ class AdditionalBoost( Analyzer ):
         self.handles['ak08']     = AutoHandle( ("slimmedJetsAK8",""), "std::vector<pat::Jet>")
 
         self.handles['ak08pruned']        = AutoHandle( ("ak08PFPrunedJetsCHS","","EX"), "std::vector<reco::BasicJet>")
+        self.handles['ak08softdrop']        = AutoHandle( ("ak08PFSoftDropJetsCHS","","EX"), "std::vector<reco::BasicJet>")
         self.handles['ak08prunedsubjets'] = AutoHandle( ("ak08PFPrunedJetsCHS","SubJets","EX"), "std::vector<reco::PFJet>")
 
         self.handles['ak08softdropsubjets'] = AutoHandle( ("slimmedJetsAK8PFCHSSoftDropPacked","SubJets"), "std::vector<pat::Jet>")
@@ -494,7 +495,7 @@ class AdditionalBoost( Analyzer ):
 
         pruned_cal_jets = []
 
-        for groomed_fj in self.handles['ak08pruned'].product():                        
+        for groomed_fj in self.handles['ak08pruned','ak08softdrop'].product():                        
 
             # We need the closest ungroomed fatjet to get the JEC:            
             # - Make a list of pairs: deltaR(ungroomed fj, groomed fj) for all ungroomed fatjets

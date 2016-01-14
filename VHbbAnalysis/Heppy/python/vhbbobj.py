@@ -181,6 +181,10 @@ fatjetType = NTupleObjectType("fatjet",  baseObjectTypes = [ fourVectorType ], v
     
     # bb-tag output variable
     NTupleVariable("bbtag",  lambda x : x.bbtag, help="Hbb b-tag score"),
+    NTupleVariable("id_Loose",  lambda x : x.jetID("POG_PFID_Loose") , int, mcOnly=False,help="POG Loose jet ID"),
+    NTupleVariable("heppyFlavour", lambda x : x.mcFlavour, int,     mcOnly=True, help="heppy-style match to gen quarks"),
+    NTupleVariable("hadronFlavour", lambda x : x.hadronFlavour(), int,     mcOnly=True, help="hadron flavour (ghost matching to B/C hadrons)"),
+	
 
     # bb-tag input variables
     NTupleVariable("PFLepton_ptrel",   lambda x : x.PFLepton_ptrel, help="pt-rel of e/mu (for bb-tag)"),    
@@ -211,8 +215,14 @@ ak8FatjetType = NTupleObjectType("ak8fatjet",  baseObjectTypes = [ fourVectorTyp
     NTupleVariable("mpruned",    lambda x : x.userFloat("ak8PFJetsCHSPrunedMass"),    help="Pruned Mass"),
     NTupleVariable("mtrimmed",   lambda x : x.userFloat("ak8PFJetsCHSTrimmedMass"),   help="Trimmed Mass"),
     NTupleVariable("mfiltered",  lambda x : x.userFloat("ak8PFJetsCHSFilteredMass"),  help="Filtered Mass"),
+    	
 
     NTupleVariable("bbtag",  lambda x : x.bbtag, help="Hbb b-tag score"),
+    NTupleVariable("id_Loose",  lambda x : x.jetID("POG_PFID_Loose") , int, mcOnly=False,help="POG Loose jet ID"),
+    NTupleVariable("heppyFlavour", lambda x : x.mcFlavour, int,     mcOnly=True, help="heppy-style match to gen quarks"),
+    NTupleVariable("hadronFlavour", lambda x : x.hadronFlavour(), int,     mcOnly=True, help="hadron flavour (ghost matching to B/C hadrons)"),
+
+    	
 
     # bb-tag input variables
     NTupleVariable("PFLepton_ptrel",   lambda x : x.PFLepton_ptrel, help="pt-rel of e/mu (for bb-tag)"),    

@@ -181,9 +181,13 @@ fatjetType = NTupleObjectType("fatjet",  baseObjectTypes = [ fourVectorType ], v
     
     # bb-tag output variable
     NTupleVariable("bbtag",  lambda x : x.bbtag, help="Hbb b-tag score"),
-    NTupleVariable("id_Loose",  lambda x : x.jetID("POG_PFID_Loose") , int, mcOnly=False,help="POG Loose jet ID"),
-    NTupleVariable("heppyFlavour", lambda x : x.mcFlavour, int,     mcOnly=True, help="heppy-style match to gen quarks"),
-    NTupleVariable("hadronFlavour", lambda x : x.hadronFlavour(), int,     mcOnly=True, help="hadron flavour (ghost matching to B/C hadrons)"),
+    NTupleVariable("id_Tight",  lambda x : x.jetID("POG_PFID_Tight") , int, mcOnly=False,help="POG Tight jet ID"),
+    #NTupleVariable("heppyFlavour", lambda x : x.mcFlavour, int,     mcOnly=True, help="heppy-style match to gen quarks"),
+    #NTupleVariable("hadronFlavour", lambda x : x.hadronFlavour(), int,     mcOnly=True, help="hadron flavour (ghost matching to B/C hadrons)"),
+    NTupleVariable("Flavour", lambda x : x.partonFlavour, int,     mcOnly=True, help="parton flavor as ghost matching"),
+    NTupleVariable("BhadronFlavour", lambda x : x.jetFlavourInfo().getbHadrons().size(), int,     mcOnly=True, help="hadron flavour (ghost matching to B hadrons)"),
+    NTupleVariable("ChadronFlavour", lambda x : x.jetFlavourInfo().getcHadrons().size(), int,     mcOnly=True, help="hadron flavour (ghost matching to C hadrons)"), 
+
 	
 
     # bb-tag input variables
@@ -215,12 +219,17 @@ ak8FatjetType = NTupleObjectType("ak8fatjet",  baseObjectTypes = [ fourVectorTyp
     NTupleVariable("mpruned",    lambda x : x.userFloat("ak8PFJetsCHSPrunedMass"),    help="Pruned Mass"),
     NTupleVariable("mtrimmed",   lambda x : x.userFloat("ak8PFJetsCHSTrimmedMass"),   help="Trimmed Mass"),
     NTupleVariable("mfiltered",  lambda x : x.userFloat("ak8PFJetsCHSFilteredMass"),  help="Filtered Mass"),
+    NTupleVariable("mprunedcorr",    lambda x : x.mprunedcorr,    help="Pruned Mass L2+L3 corrected"),	
     	
 
     NTupleVariable("bbtag",  lambda x : x.bbtag, help="Hbb b-tag score"),
-    NTupleVariable("id_Loose",  lambda x : x.jetID("POG_PFID_Loose") , int, mcOnly=False,help="POG Loose jet ID"),
-    NTupleVariable("heppyFlavour", lambda x : x.mcFlavour, int,     mcOnly=True, help="heppy-style match to gen quarks"),
-    NTupleVariable("hadronFlavour", lambda x : x.hadronFlavour(), int,     mcOnly=True, help="hadron flavour (ghost matching to B/C hadrons)"),
+    NTupleVariable("id_Tight",  lambda x : x.jetID("POG_PFID_Tight") , int, mcOnly=False,help="POG Tight jet ID"),
+    #NTupleVariable("heppyFlavour", lambda x : x.mcFlavour, int,     mcOnly=True, help="heppy-style match to gen quarks"),
+    #NTupleVariable("hadronFlavour", lambda x : x.hadronFlavour(), int,     mcOnly=True, help="hadron flavour (ghost matching to B/C hadrons)"),
+    NTupleVariable("Flavour", lambda x : x.partonFlavour, int,     mcOnly=True, help="parton flavor as ghost matching"),
+    NTupleVariable("BhadronFlavour", lambda x : x.jetFlavourInfo().getbHadrons().size(), int,     mcOnly=True, help="hadron flavour (ghost matching to B hadrons)"),
+    NTupleVariable("ChadronFlavour", lambda x : x.jetFlavourInfo().getcHadrons().size(), int,     mcOnly=True, help="hadron flavour (ghost matching to C hadrons)"),	
+	
 
     	
 

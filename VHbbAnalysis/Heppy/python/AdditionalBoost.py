@@ -378,10 +378,13 @@ class AdditionalBoost( Analyzer ):
         # Loop over jets                        
         for ij, jet in enumerate(getattr(event, "ak08")):
 
-            # Fill bb-tag
+
+            # Fill bb-tag and pruned jet mass corrected
             for i in xrange(len(newtags)) :
                 if jet.physObj == newtags.key(i).get():
                     jet.bbtag = newtags.value(i)
+		corr= self.jetReCalibratorAK8.getCorrection(jet,rho)
+		jet.mprunedcorr= jet.userFloat("ak8PFJetsCHSPrunedMass")*corr
 
 
             # bb-tag Inputs
@@ -495,7 +498,7 @@ class AdditionalBoost( Analyzer ):
 
         pruned_cal_jets = []
 
-        for groomed_fj in self.handles['ak08pruned','ak08softdrop'].product():                        
+        for groomed_fj in self.handles['ak08pruned'].product():                        
 
             # We need the closest ungroomed fatjet to get the JEC:            
             # - Make a list of pairs: deltaR(ungroomed fj, groomed fj) for all ungroomed fatjets

@@ -40,13 +40,13 @@ treeProducer.collections["ak08pruned"] = NTupleCollection("FatjetAK08pruned",
 
 
 treeProducer.collections["ak08prunedcal"] = NTupleCollection("FatjetAK08prunedCal",
-                                                             fatjetType,
+                                                             fourVectorType,
                                                              10,
                                                              help="AK, R=0.8, pT > 200 GeV, pruned zcut=0.1, rcut=0.5, n=2, calibrated")
 
 
 treeProducer.collections["ak08softdrop"] = NTupleCollection("FatjetAK08softdrop",
-                                                             fatjetType,
+                                                             fourVectorType,
                                                              10,
                                                              help="AK, R=0.8, pT > 200 GeV, pruned zcut=0.1, rcut=0.5, n=2, calibrated")
 
@@ -66,13 +66,13 @@ if not boostana.skip_ca15:
                                                                  help = "CA, R=1.5, pT > 200 GeV, no grooming")
 
     treeProducer.collections["ca15softdrop"] = NTupleCollection("FatjetCA15softdrop",
-                                                                fatjetType,
+                                                                fourVectorType,
                                                                 10,
                                                                 help="CA, R=1.5, pT > 200 GeV, softdrop zcut=0.1, beta=0")
 
     # four-vector + n-subjettiness
     treeProducer.collections["ca15softdropz2b1"] = NTupleCollection("FatjetCA15softdropz2b1",
-                                                                    fatjetTauType,
+                                                                    fourVectorType,
                                                                     10,
                                                                     help="CA, R=1.5, pT > 200 GeV, softdrop zcut=0.2, beta=1")
 

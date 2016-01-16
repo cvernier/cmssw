@@ -291,7 +291,6 @@ class AdditionalBoost( Analyzer ):
         self.handles['ak08']     = AutoHandle( ("slimmedJetsAK8",""), "std::vector<pat::Jet>")
 
         self.handles['ak08pruned']        = AutoHandle( ("ak08PFPrunedJetsCHS","","EX"), "std::vector<reco::BasicJet>")
-        self.handles['ak08softdrop']        = AutoHandle( ("ak08PFSoftDropJetsCHS","","EX"), "std::vector<reco::BasicJet>")
         self.handles['ak08prunedsubjets'] = AutoHandle( ("ak08PFPrunedJetsCHS","SubJets","EX"), "std::vector<reco::PFJet>")
 
         self.handles['ak08softdropsubjets'] = AutoHandle( ("slimmedJetsAK8PFCHSSoftDropPacked","SubJets"), "std::vector<pat::Jet>")
@@ -488,7 +487,7 @@ class AdditionalBoost( Analyzer ):
         # Groomed Uncalibrated Fatjets
         ########
 
-        for fj_name in ['ak08pruned', 'ca15trimmed', 'ca15softdrop', 'ca15pruned']:            
+        for fj_name in ['ak08pruned','ca15trimmed', 'ca15softdrop', 'ca15pruned']:            
                 setattr(event, fj_name, map(PhysicsObject, self.handles[fj_name].product()))
 
 

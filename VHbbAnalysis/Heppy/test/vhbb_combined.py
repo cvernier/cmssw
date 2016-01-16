@@ -44,13 +44,6 @@ treeProducer.collections["ak08prunedcal"] = NTupleCollection("FatjetAK08prunedCa
                                                              10,
                                                              help="AK, R=0.8, pT > 200 GeV, pruned zcut=0.1, rcut=0.5, n=2, calibrated")
 
-
-treeProducer.collections["ak08softdrop"] = NTupleCollection("FatjetAK08softdrop",
-                                                             fourVectorType,
-                                                             10,
-                                                             help="AK, R=0.8, pT > 200 GeV, pruned zcut=0.1, rcut=0.5, n=2, calibrated")
-
-
 treeProducer.collections["ak08prunedsubjets"] = NTupleCollection("SubjetAK08pruned",
                                                                  subjetType,
                                                                  10,
@@ -62,7 +55,7 @@ treeProducer.collections["ak08softdropsubjets"] = NTupleCollection("SubjetAK08so
                                                                  help="Subjets of AK, R=0.8 softdrop")
 
 if not boostana.skip_ca15:
-    treeProducer.collections["ca15ungroomed"] = NTupleCollection("FatjetCA15ungroomed",  ak8FatjetType,  10,
+    treeProducer.collections["ca15ungroomed"] = NTupleCollection("FatjetCA15ungroomed",  fatjetType,  10,
                                                                  help = "CA, R=1.5, pT > 200 GeV, no grooming")
 
     treeProducer.collections["ca15softdrop"] = NTupleCollection("FatjetCA15softdrop",

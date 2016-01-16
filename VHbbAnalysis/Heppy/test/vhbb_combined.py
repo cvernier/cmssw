@@ -72,7 +72,7 @@ if not boostana.skip_ca15:
 
     # four-vector + n-subjettiness
     treeProducer.collections["ca15softdropz2b1"] = NTupleCollection("FatjetCA15softdropz2b1",
-                                                                    fourVectorType,
+                                                                    fatjetTauType,
                                                                     10,
                                                                     help="CA, R=1.5, pT > 200 GeV, softdrop zcut=0.2, beta=1")
 

@@ -383,7 +383,7 @@ class AdditionalBoost( Analyzer ):
             for i in xrange(len(newtags)) :
                 if jet.physObj == newtags.key(i).get():
                     jet.bbtag = newtags.value(i)
-		corr= self.jetReCalibratorAK8.getCorrection(jet,rho)
+		corr= 1.# self.jetReCalibratorAK8.getCorrection(jet,rho)
 		jet.mprunedcorr= jet.userFloat("ak8PFJetsCHSPrunedMass")*corr
 
 

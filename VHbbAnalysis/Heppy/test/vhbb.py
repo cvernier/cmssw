@@ -344,8 +344,9 @@ TrigAna = cfg.Analyzer(
     verbose = False,
     class_object = TriggerBitAnalyzer,
     triggerBits = triggerTable,  #default is MC, use the triggerTableData in -data.py files
-#   processName = 'HLT',
-#   outprefix = 'HLT'
+    processName = "HLT2"
+
+    #outprefix = 'HLT2'
    )
 
 from PhysicsTools.HeppyCore.framework.services.tfile import TFileService 
@@ -369,6 +370,7 @@ hbheAna = hbheAnalyzer.defaultConfig
 from PhysicsTools.Heppy.analyzers.core.TriggerObjectsAnalyzer import TriggerObjectsAnalyzer
 from VHbbAnalysis.Heppy.TriggerObjectsList import *
 TriggerObjectsAna = TriggerObjectsAnalyzer.defaultConfig
+TriggerObjectsAna.triggerBitsInputTag = ('TriggerResults','','HLT2')
 TriggerObjectsAna.triggerObjectsCfgs = triggerObjectCollections
 
 for collectionName in triggerObjectCollectionsFull.keys():
@@ -417,7 +419,8 @@ from PhysicsTools.Heppy.utils.miniAodFiles import miniAodFiles
 sample = cfg.MCComponent(
 	files = [
 		#"root://xrootd.ba.infn.it//store/mc/RunIIFall15MiniAODv1/TT_TuneCUETP8M1_13TeV-powheg-scaledown-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/30000/045996FE-A19D-E511-B76D-D4AE526A0B47.root" ##ttbar
-		"root://xrootd.ba.infn.it//store/mc/RunIISpring16MiniAODv1/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/00000/0899BDA9-AE01-E611-A239-008CFA05EA2C.root"
+	        #	"root://xrootd.ba.infn.it//store/mc/RunIISpring16MiniAODv1/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/00000/0899BDA9-AE01-E611-A239-008CFA05EA2C.root"
+                "root://eoscms.cern.ch//eos/cms/store/mc/RunIISpring16MiniAODv2/GluGluToBulkGravitonToHHTo4B_M-550_narrow_13TeV-madgraph/MINIAODSIM/PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v2/90000/4E40D2E2-9E3A-E611-8C5B-00259081FB18.root"
 		],
     #files = ["226BB247-A565-E411-91CF-00266CFF0AF4.root"],
     name="ZHLL125", isEmbed=False,

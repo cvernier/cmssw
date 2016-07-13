@@ -344,7 +344,7 @@ TrigAna = cfg.Analyzer(
     verbose = False,
     class_object = TriggerBitAnalyzer,
     triggerBits = triggerTable,  #default is MC, use the triggerTableData in -data.py files
-#   processName = 'HLT',
+   processName = 'HLT2',
 #   outprefix = 'HLT'
    )
 
@@ -370,6 +370,7 @@ from PhysicsTools.Heppy.analyzers.core.TriggerObjectsAnalyzer import TriggerObje
 from VHbbAnalysis.Heppy.TriggerObjectsList import *
 TriggerObjectsAna = TriggerObjectsAnalyzer.defaultConfig
 TriggerObjectsAna.triggerObjectsCfgs = triggerObjectCollections
+TriggerObjectsAna.triggerBitsInputTag = ('TriggerResults','','HLT2')
 
 for collectionName in triggerObjectCollectionsFull.keys():
     treeProducer.collections["trgObjects_"+collectionName] = NTupleCollection("trgObjects_"+collectionName, triggerObjectsType, 5, help="")

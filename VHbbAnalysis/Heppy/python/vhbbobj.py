@@ -305,8 +305,8 @@ ak8FatjetType = NTupleObjectType("ak8fatjet",  baseObjectTypes = [ fourVectorTyp
     NTupleVariable("msoftdrop",  lambda x : x.userFloat("ak8PFJetsCHSSoftDropMass"),  help="Softdrop Mass"),
     NTupleVariable("mpruned",    lambda x : x.userFloat("ak8PFJetsCHSPrunedMass"),    help="Pruned Mass"),
     NTupleVariable("mprunedcorr",    lambda x : x.mprunedcorr,    help="Pruned Mass L2+L3 corrected"),
-    NTupleVariable("JEC_L2L3",    lambda x : x.mprunedcorr,    help="L2+L3 correction factor for pruned mass"),	
-    NTupleVariable("JEC_L1L2L3",    lambda x : x.mprunedcorr,    help="L1+L2+L3 correction factor for ungroomed pt"),	
+    NTupleVariable("JEC_L2L3",    lambda x : x.JEC_L2L3,    help="L2+L3 correction factor for pruned mass"),	
+    NTupleVariable("JEC_L1L2L3",    lambda x : x.JEC_L1L2L3,    help="L1+L2+L3 correction factor for ungroomed pt"),	
     #NTupleVariable("JEC_L2L3Unc",    lambda x : x.JEC_L2L3Unc,    help="Unc L2+L3 correction factor for pruned mass"),
     #NTupleVariable("JEC_L1L2L3Unc",    lambda x : x.JEC_L1L2L3Unc,    help="Unc L1+L2+L3 correction factor for ungroomed pt"),
 

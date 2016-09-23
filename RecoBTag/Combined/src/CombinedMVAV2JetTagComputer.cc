@@ -45,7 +45,7 @@ CombinedMVAV2JetTagComputer::~CombinedMVAV2JetTagComputer()
 {
 }
 
-void CombinedMVAV2JetTagComputer::initialize(const JetTagComputerRecord & record) {
+void CombinedMVAV2JetTagComputer::initialize(const JetTagComputerRecord & record, const edm::Event&) {
 
   mvaID.reset(new TMVAEvaluator());
 

@@ -16,7 +16,7 @@ class CombinedMVAV2JetTagComputer : public JetTagComputer {
         CombinedMVAV2JetTagComputer(const edm::ParameterSet &parameters);
         virtual ~CombinedMVAV2JetTagComputer();
 
-        virtual void initialize(const JetTagComputerRecord & record) override;
+        virtual void initialize(const JetTagComputerRecord & record, const edm::Event&) override;
 
         float discriminator(const TagInfoHelper &info) const override;
 

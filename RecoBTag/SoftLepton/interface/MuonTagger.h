@@ -16,7 +16,7 @@ class MuonTagger : public JetTagComputer {
   public:
   
     MuonTagger(const edm::ParameterSet&);
-    void initialize(const JetTagComputerRecord &) override;
+    void initialize(const JetTagComputerRecord &,const edm::Event&) override;
     virtual float discriminator(const TagInfoHelper& tagInfo) const override;
     
   private:

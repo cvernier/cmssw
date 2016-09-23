@@ -5,6 +5,7 @@
 #include <string>
 
 #include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/Exception.h"
 #include "DataFormats/BTauReco/interface/BaseTagInfo.h"
@@ -88,7 +89,7 @@ class JetTagComputer {
 	explicit JetTagComputer(const edm::ParameterSet& configuration) :
 		m_setupDone(false) {}
 
-	virtual void initialize(const JetTagComputerRecord &) {}
+	virtual void initialize(const JetTagComputerRecord &, const edm::Event&) {}
 
 	float operator () (const reco::BaseTagInfo& info) const;
 	inline float operator () (const TagInfoHelper &helper) const

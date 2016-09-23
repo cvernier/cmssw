@@ -28,8 +28,8 @@ public:
   virtual ~JetTagComputerESProducer() {
   }
 
-  boost::shared_ptr<JetTagComputer> produce(const JetTagComputerRecord & record) {
-    m_jetTagComputer->initialize(record);
+  boost::shared_ptr<JetTagComputer> produce(const JetTagComputerRecord & record, const edm::Event& event) {
+    m_jetTagComputer->initialize(record, event);
     m_jetTagComputer->setupDone();
     return m_jetTagComputer;
   }

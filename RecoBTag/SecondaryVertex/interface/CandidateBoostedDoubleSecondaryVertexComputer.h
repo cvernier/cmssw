@@ -6,15 +6,21 @@
 #include "CommonTools/Utils/interface/TMVAEvaluator.h"
 #include "RecoBTau/JetTagComputer/interface/JetTagComputer.h"
 #include "DataFormats/JetReco/interface/JetCollection.h"
+#include "DataFormats/JetReco/interface/PFJet.h"
+#include "DataFormats/JetReco/interface/BasicJetCollection.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/Candidate/interface/VertexCompositePtrCandidate.h"
 #include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
 #include "RecoBTag/SecondaryVertex/interface/V0Filter.h"
 #include "RecoBTag/SecondaryVertex/interface/TrackSelector.h"
+#include "DataFormats/JetReco/interface/PFJetCollection.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
-
+#include "FWCore/Framework/interface/Event.h"
 #include "fastjet/PseudoJet.hh"
+#include "DataFormats/JetReco/interface/PFJetCollection.h"
+#include "DataFormats/BTauReco/interface/JetTag.h"
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 class CandidateBoostedDoubleSecondaryVertexComputer : public JetTagComputer {
 
@@ -22,13 +28,14 @@ class CandidateBoostedDoubleSecondaryVertexComputer : public JetTagComputer {
     CandidateBoostedDoubleSecondaryVertexComputer(const edm::ParameterSet & parameters);
 
     void  initialize(const JetTagComputerRecord &) override;
-    float discriminator(const TagInfoHelper & tagInfos) const override;
+    float discriminator(const TagInfoHelper & tagInfos, const float subjetmin) const override;
 
   private:
     void calcNsubjettiness(const reco::JetBaseRef & jet, float & tau1, float & tau2, std::vector<fastjet::PseudoJet> & currentAxes) const;
     void setTracksPVBase(const reco::TrackRef & trackRef, const reco::VertexRef & vertexRef, float & PVweight) const;
     void setTracksPV(const reco::CandidatePtr & trackRef, const reco::VertexRef & vertexRef, float & PVweight) const;
     void etaRelToTauAxis(const reco::VertexCompositePtrCandidate & vertex, fastjet::PseudoJet & tauAxis, std::vector<float> & tau_trackEtaRel) const;
+
 
     const double beta_;
     const double R0_;
@@ -43,11 +50,15 @@ class CandidateBoostedDoubleSecondaryVertexComputer : public JetTagComputer {
     const double maxDecayLen_;
     reco::V0Filter trackPairV0Filter;
     reco::TrackSelector trackSelector;
+    std::string SubJetName_;
+    std::string CSVbtagSubJetName_;
 
     edm::ESHandle<TransientTrackBuilder> trackBuilder;
     std::unique_ptr<TMVAEvaluator> mvaID;
 
+
     // static variables
+    static constexpr float dummySubJet_csv	    = -3.0f;
     static constexpr float dummyZ_ratio             = -3.0f;
     static constexpr float dummyTrackSip3dSig       = -50.0f;
     static constexpr float dummyTrackSip2dSigAbove  = -19.0f;

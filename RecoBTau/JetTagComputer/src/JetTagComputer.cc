@@ -45,4 +45,12 @@ float JetTagComputer::discriminator(const JetTagComputer::TagInfoHelper &info) c
 	return discriminator(info.getBase(0));
 }
 
+
+float JetTagComputer::discriminator(const JetTagComputer::TagInfoHelper &info,const float subjetmin) const
+{
+        return discriminator(info.getBase(0));//,subjetmin);
+}
+
+
+
 TYPELOOKUP_DATA_REG(JetTagComputer);

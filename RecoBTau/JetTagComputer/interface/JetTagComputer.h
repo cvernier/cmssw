@@ -3,8 +3,9 @@
 
 #include <vector>
 #include <string>
-
+#include "DataFormats/JetReco/interface/PFJetCollection.h"
 #include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/Exception.h"
 #include "DataFormats/BTauReco/interface/BaseTagInfo.h"
@@ -93,6 +94,9 @@ class JetTagComputer {
 	float operator () (const reco::BaseTagInfo& info) const;
 	inline float operator () (const TagInfoHelper &helper) const
 	{ return discriminator(helper); }
+	inline float operator () (const TagInfoHelper &helper, const float subjetmin ) const
+	{ return discriminator(helper,subjetmin); }
+	
 
 	inline const std::vector<std::string> &getInputLabels() const
 	{ return m_inputLabels; }
@@ -105,6 +109,7 @@ class JetTagComputer {
 
 	virtual float discriminator(const reco::BaseTagInfo&) const;
 	virtual float discriminator(const TagInfoHelper&) const;
+	virtual float discriminator(const TagInfoHelper&,const float  ) const;
 
     private:
 	std::vector<std::string>	m_inputLabels;

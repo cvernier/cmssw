@@ -1,7 +1,7 @@
 #include "RecoBTag/SecondaryVertex/interface/CandidateBoostedDoubleSecondaryVertexComputer.h"
 
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-
+#include "FWCore/Utilities/interface/InputTag.h"
 #include "CondFormats/DataRecord/interface/BTauGenericMVAJetTagComputerRcd.h"
 #include "CondFormats/DataRecord/interface/GBRWrapperRcd.h"
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
@@ -29,9 +29,11 @@ CandidateBoostedDoubleSecondaryVertexComputer::CandidateBoostedDoubleSecondaryVe
   maxDecayLen_(parameters.getParameter<edm::ParameterSet>("trackSelection").getParameter<double>("maxDecayLen")),
   trackPairV0Filter(parameters.getParameter<edm::ParameterSet>("trackPairV0Filter")),
   trackSelector(parameters.getParameter<edm::ParameterSet>("trackSelection"))
+
 {
   uses(0, "ipTagInfos");
   uses(1, "svTagInfos");
+  
 
   mvaID.reset(new TMVAEvaluator());
 }
@@ -39,7 +41,8 @@ CandidateBoostedDoubleSecondaryVertexComputer::CandidateBoostedDoubleSecondaryVe
 void CandidateBoostedDoubleSecondaryVertexComputer::initialize(const JetTagComputerRecord & record)
 {
   // variable names and order need to be the same as in the training
-  std::vector<std::string> variables({"z_ratio",
+  std::vector<std::string> variables({"SubJet_csv",
+				      "z_ratio",
                                       "trackSipdSig_3","trackSipdSig_2","trackSipdSig_1","trackSipdSig_0",
                                       "trackSipdSig_1_0","trackSipdSig_0_0","trackSipdSig_1_1","trackSipdSig_0_1",
                                       "trackSip2dSigAboveCharm_0","trackSip2dSigAboveBottom_0","trackSip2dSigAboveBottom_1",
@@ -66,9 +69,11 @@ void CandidateBoostedDoubleSecondaryVertexComputer::initialize(const JetTagCompu
   // get TransientTrackBuilder
   const TransientTrackRecord & transientTrackRcd = record.getRecord<TransientTrackRecord>();
   transientTrackRcd.get("TransientTrackBuilder", trackBuilder);
+
+
 }
 
-float CandidateBoostedDoubleSecondaryVertexComputer::discriminator(const TagInfoHelper & tagInfo) const
+float CandidateBoostedDoubleSecondaryVertexComputer::discriminator(const TagInfoHelper & tagInfo,const float subjetmin) const
 {
   // get TagInfos
   const reco::CandIPTagInfo              & ipTagInfo = tagInfo.get<reco::CandIPTagInfo>(0);
@@ -78,6 +83,7 @@ float CandidateBoostedDoubleSecondaryVertexComputer::discriminator(const TagInfo
   float value = -10.;
 
   // default variable values
+  float SubJet_csv = dummySubJet_csv;
   float z_ratio = dummyZ_ratio;
   float trackSip3dSig_3 = dummyTrackSip3dSig, trackSip3dSig_2 = dummyTrackSip3dSig, trackSip3dSig_1 = dummyTrackSip3dSig, trackSip3dSig_0 = dummyTrackSip3dSig;
   float tau2_trackSip3dSig_0 = dummyTrackSip3dSig, tau1_trackSip3dSig_0 = dummyTrackSip3dSig, tau2_trackSip3dSig_1 = dummyTrackSip3dSig, tau1_trackSip3dSig_1 = dummyTrackSip3dSig;
@@ -95,6 +101,31 @@ float CandidateBoostedDoubleSecondaryVertexComputer::discriminator(const TagInfo
   float tau2, tau1;
   // calculate N-subjettiness
   calcNsubjettiness(jet, tau1, tau2, currentAxes);
+
+  // add subjet info
+  /*const reco::PFJet *subjet1=0, *subjet2=0;
+  double csv1=-2, csv2=-2;
+  for(reco::PFJetCollection::const_iterator itSubJet = subJetCol.begin(); itSubJet!=subJetCol.end(); ++itSubJet) {
+        if(reco::deltaR(jet->eta(),jet->phi(),itSubJet->eta(),itSubJet->phi())>0.4) continue;
+        // (!) get associated subjets by dR ( see https://github.com/ksung25/BaconProd/blob/master/Ntupler/src/FillerJet.cc#L712-L713)
+   
+//        reco::PFJetRef subjetRef(hSubJetProduct, itSubJet - subJetCol->begin());
+//        reco::JetBaseRef subjetBaseRef(subjetRef);
+
+        if(!subjet1 || itSubJet->pt() > subjet1->pt()) {
+                subjet2 = subjet1;
+                csv2    = csv1;
+                subjet1 = &(*itSubJet);
+  //              csv1    = (*(hCSVbtagsSubJets.product()))[subjetBaseRef];
+        } else if(!subjet2 || itSubJet->pt() > subjet2->pt()) {
+
+                subjet2 = &(*itSubJet);
+   //             csv2    = (*(hCSVbtagsSubJets.product()))[subjetBaseRef];
+        }
+   }*/
+   SubJet_csv = subjetmin;//std::min(csv1,csv2);
+
+
 
   const reco::VertexRef & vertexRef = ipTagInfo.primaryVertex();
   GlobalPoint pv(0.,0.,0.);
@@ -526,6 +557,7 @@ float CandidateBoostedDoubleSecondaryVertexComputer::discriminator(const TagInfo
 
 
   std::map<std::string,float> inputs;
+  inputs["SubJet_csv"]= SubJet_csv;
   inputs["z_ratio"] = z_ratio;
   inputs["trackSipdSig_3"] = trackSip3dSig_3;
   inputs["trackSipdSig_2"] = trackSip3dSig_2;

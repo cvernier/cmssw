@@ -68,7 +68,7 @@ void CandidateBoostedDoubleSecondaryVertexComputer::initialize(const JetTagCompu
   transientTrackRcd.get("TransientTrackBuilder", trackBuilder);
 }
 
-float CandidateBoostedDoubleSecondaryVertexComputer::discriminator(const TagInfoHelper & tagInfo) const
+BoostedDoubleSVTagInfo CandidateBoostedDoubleSecondaryVertexComputer::computeIdVariables(const TagInfoHelper & tagInfo) const
 {
   // get TagInfos
   const reco::CandIPTagInfo              & ipTagInfo = tagInfo.get<reco::CandIPTagInfo>(0);
@@ -525,6 +525,34 @@ float CandidateBoostedDoubleSecondaryVertexComputer::discriminator(const TagInfo
   }
 
 
+   internalId_.z_ratio_= z_ratio;
+   internalId_.trackSipdSig_3_= trackSip3dSig_3;
+   internalId_.trackSipdSig_2_= trackSip3dSig_2;
+   internalId_.trackSipdSig_1_= trackSip3dSig_1;
+   internalId_.trackSipdSig_0_= trackSip3dSig_0;
+   internalId_.trackSipdSig_1_0_= tau2_trackSip3dSig_0;
+   internalId_.trackSipdSig_0_0_= tau1_trackSip3dSig_0;
+   internalId_.trackSipdSig_1_1_= tau2_trackSip3dSig_1;
+   internalId_.trackSipdSig_0_1_= tau1_trackSip3dSig_1;
+   internalId_.trackSip2dSigAboveCharm_0_= trackSip2dSigAboveCharm_0;
+   internalId_.trackSip2dSigAboveBottom_0_= trackSip2dSigAboveBottom_0;
+   internalId_.trackSip2dSigAboveBottom_1_= trackSip2dSigAboveBottom_1;
+   internalId_.tau1_trackEtaRel_0_= tau2_trackEtaRel_0;
+   internalId_.tau1_trackEtaRel_1_= tau2_trackEtaRel_1;
+   internalId_.tau1_trackEtaRel_2_= tau2_trackEtaRel_2;
+   internalId_.tau0_trackEtaRel_0_= tau1_trackEtaRel_0;
+   internalId_.tau0_trackEtaRel_1_= tau1_trackEtaRel_1;
+   internalId_.tau0_trackEtaRel_2_= tau1_trackEtaRel_2;
+   internalId_.tau_vertexMass_0_= tau1_vertexMass;
+   internalId_.tau_vertexEnergyRatio_0_= tau1_vertexEnergyRatio;
+   internalId_.tau_vertexDeltaR_0_= tau1_vertexDeltaR;
+   internalId_.tau_flightDistance2dSig_0_= tau1_flightDistance2dSig;
+   internalId_.tau_vertexMass_1_= tau2_vertexMass;
+   internalId_.tau_vertexEnergyRatio_1_= tau2_vertexEnergyRatio;
+   internalId_.tau_flightDistance2dSig_1_= tau2_flightDistance2dSig;
+   internalId_.jetNTracks_= jetNTracks;
+   internalId_.nSV_= nSV;
+
   std::map<std::string,float> inputs;
   inputs["z_ratio"] = z_ratio;
   inputs["trackSipdSig_3"] = trackSip3dSig_3;
@@ -554,11 +582,21 @@ float CandidateBoostedDoubleSecondaryVertexComputer::discriminator(const TagInfo
   inputs["jetNTracks"] = jetNTracks;
   inputs["nSV"] = nSV;
 
+
+
   // evaluate the MVA
   value = mvaID->evaluate(inputs);
+  internalId_.mva_ = value;
 
-  // return the final discriminator value
-  return value;
+  return BoostedDoubleSVTagInfo(internalId_);;
+}
+
+void CandidateBoostedDoubleSecondaryVertexComputer::discriminator() const
+{
+   return internalId_.mva_ ;
+// return the final discriminator value
+//   return value;
+//
 }
 
 
@@ -656,4 +694,47 @@ void CandidateBoostedDoubleSecondaryVertexComputer::etaRelToTauAxis(const reco::
 
   for(std::vector<reco::CandidatePtr>::const_iterator track = tracks.begin(); track != tracks.end(); ++track)
     tau_trackEtaRel.push_back(std::abs(reco::btau::etaRel(direction.Unit(), (*track)->momentum())));
+}
+
+
+#define INIT_VARIABLE(NAME,TMVANAME,VAL)    \
+	internalId_.NAME ## _ = VAL; \
+variables_[ # NAME   ] = std::make_pair(& internalId_.NAME ## _, VAL);
+
+void CandidateBoostedDoubleSecondaryVertexComputer::initVariables()
+{
+	INIT_VARIABLE(mva        , "", -100.);
+	INIT_VARIABLE(z_ratio,"z_ratio",dummyZ_ratio);
+        INIT_VARIABLE(trackSipdSig_3, "trackSipdSig_3",dummyTrackSipdSig_3);
+        INIT_VARIABLE(trackSipdSig_2, "trackSipdSig_2",dummyTrackSipdSig_2);
+        INIT_VARIABLE(trackSipdSig_1, "trackSipdSig_1",dummyTrackSipdSig_1);
+        INIT_VARIABLE(trackSipdSig_0, "trackSipdSig_0",dummyTrackSipdSig_0) ;
+        INIT_VARIABLE(trackSipdSig_1_0, "trackSipdSig_1_0",dummyTrackSipdSig_1_0) ;
+        INIT_VARIABLE(trackSipdSig_0_0, "trackSipdSig_0_0",dummyTrackSipdSig_0_0) ;
+        INIT_VARIABLE(trackSipdSig_1_1, "trackSipdSig_1_1",dummyTrackSipdSig_1_1) ;
+        INIT_VARIABLE(trackSipdSig_0_1, "trackSipdSig_0_1",dummyTrackSipdSig_0_1) ;
+        INIT_VARIABLE(trackSip2dSigAboveCharm_0, "trackSip2dSigAboveCharm_0",dummyTrackSip2dSigAboveCharm_0);
+        INIT_VARIABLE(trackSip2dSigAboveBottom_0, "trackSip2dSigAboveBottom_0",dummyTrackSip2dSigAboveBottom_0);
+        INIT_VARIABLE(trackSip2dSigAboveBottom_1, "trackSip2dSigAboveBottom_1",dummyTrackSip2dSigAboveBottom_1);
+        INIT_VARIABLE(tau1_trackEtaRel_0, "tau1_trackEtaRel_0",dummyTau1_trackEtaRel_0);
+        INIT_VARIABLE(tau1_trackEtaRel_1, "tau1_trackEtaRel_1",dummyTau1_trackEtaRel_1);
+        INIT_VARIABLE(tau1_trackEtaRel_2, "tau1_trackEtaRel_2",dummyTau1_trackEtaRel_2) ;
+        INIT_VARIABLE(tau0_trackEtaRel_0, "tau0_trackEtaRel_0",dummyTau0_trackEtaRel_0) ;
+        INIT_VARIABLE(tau0_trackEtaRel_1, "tau0_trackEtaRel_1",dummyTau0_trackEtaRel_1) ;
+        INIT_VARIABLE(tau0_trackEtaRel_2, "tau0_trackEtaRel_2",dummyTau0_trackEtaRel_2) ;
+        INIT_VARIABLE(tau_vertexMass_0, "tau_vertexMass_0",dummyTau_vertexMass_0) ;
+        INIT_VARIABLE(tau_vertexEnergyRatio_0, "tau_vertexEnergyRatio_0",dummyTau_vertexEnergyRatio_0) ;
+        INIT_VARIABLE(tau_vertexDeltaR_0, "tau_vertexDeltaR_0",dummyTau_vertexDeltaR_0) ;
+        INIT_VARIABLE(tau_flightDistance2dSig_0, "tau_flightDistance2dSig_0",dummyTau_flightDistance2dSig_0) ;
+        INIT_VARIABLE(tau_vertexMass_1, "tau_vertexMass_1",dummyTau_vertexMass_1) ;
+        INIT_VARIABLE(tau_vertexEnergyRatio_1, "tau_vertexEnergyRatio_1",dummyTau_vertexEnergyRatio_1) ;
+        INIT_VARIABLE(tau_flightDistance2dSig_1, "tau_flightDistance2dSig_1",dummyTau_flightDistance2dSig_1) ;
+        INIT_VARIABLE(jetNTracks, "jetNTracks",0) ;
+        INIT_VARIABLE(nSV, "nSV",0 ) ;
+
+        INIT_VARIABLE(massPruned,"massPruned",0);
+        INIT_VARIABLE(flavour, "flavour",0);
+        INIT_VARIABLE(nbHadrons, "nbHadrons",0);
+        INIT_VARIABLE(ptPruned, "ptPruned",0);
+        INIT_VARIABLE(etaPruned, "etaPruned",0);
 }

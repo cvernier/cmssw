@@ -4,7 +4,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "CommonTools/Utils/interface/TMVAEvaluator.h"
-#include "RecoBTau/JetTagComputer/interface/JetTagComputer.h"
+//#include "RecoBTau/JetTagComputer/interface/JetTagComputer.h"
 #include "DataFormats/JetReco/interface/JetCollection.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
@@ -14,15 +14,23 @@
 #include "RecoBTag/SecondaryVertex/interface/TrackSelector.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
 
+#include "DataFormats/BTauReco/interface/BoostedDoubleSVTagInfo.h"
+
 #include "fastjet/PseudoJet.hh"
 
-class CandidateBoostedDoubleSecondaryVertexComputer : public JetTagComputer {
+class CandidateBoostedDoubleSecondaryVertexComputer/* : public JetTagComputer*/ {
 
   public:
     CandidateBoostedDoubleSecondaryVertexComputer(const edm::ParameterSet & parameters);
+    ~CandidateBoostedDoubleSecondaryVertexComputer();
 
     void  initialize(const JetTagComputerRecord &) override;
     float discriminator(const TagInfoHelper & tagInfos) const override;
+    BoostedDoubleSVTagInfo computeIdVariables(const TagInfoHelper & tagInfos) ;
+   // BoostedDoubleSVTagInfo computeMVA();
+    
+    typedef std::map<std::string,std::pair<float *,float> > variables_list_t;
+    const variables_list_t & getVariables() const { return variables_; };
 
   private:
     void calcNsubjettiness(const reco::JetBaseRef & jet, float & tau1, float & tau2, std::vector<fastjet::PseudoJet> & currentAxes) const;
@@ -46,6 +54,10 @@ class CandidateBoostedDoubleSecondaryVertexComputer : public JetTagComputer {
 
     edm::ESHandle<TransientTrackBuilder> trackBuilder;
     std::unique_ptr<TMVAEvaluator> mvaID;
+
+
+    BoostedDoubleSVTagInfo internalId_;
+    variables_list_t variables_;
 
     // static variables
     static constexpr float dummyZ_ratio             = -3.0f;
